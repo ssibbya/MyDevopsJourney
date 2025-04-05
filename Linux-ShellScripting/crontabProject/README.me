@@ -1,0 +1,220 @@
+Absolutely! Here's a more **conversational, GitHub-style post** that walks readers through your journey of automating AWS reporting with `cron`, including how you **monitored the cron job**, your thought process, and challenges.
+
+You can copy and paste this into your GitHub project’s `README.md`, or even turn it into a blog-style Markdown post.
+
+---
+
+# 🕒 Automating AWS Resource Reporting with Cron on EC2 (The Chill Weekend Way)
+
+Hey there! 👋  
+This post is a quick walk-through of how I used `cron` on an EC2 Ubuntu instance to **automate AWS resource reporting** — EC2s, S3 buckets, Lambda functions — and have it land in my inbox automatically every weekend. 🌤️
+
+Yup, full automation. No more manual `aws ec2 describe-instances` on sleepy Sunday mornings. Let’s go. 🚀
+
+---
+
+## ✨ What I Wanted to Do
+
+- List my AWS resources (EC2, S3, Lambda, etc.)
+- Save the report to a `.log` file
+- Automatically **email that report** to myself every 10 minutes on weekends
+- Monitor whether cron was actually doing its job
+
+---
+
+## 🧰 Step-by-Step Setup
+
+### 🔧 1. Wrote a Bash Script
+
+I started with a simple script called `aws-resource-report.sh`. It collects my AWS resources and emails the log using `msmtp`.
+
+```bash
+#!/bin/bash
+
+LOGFILE="/home/ubuntu/aws-report.log"
+TO="recipient@gmail.com"
+FROM="your_verified_sender@gmail.com"
+
+# Clear old log
+> "$LOGFILE"
+
+# Timestamp
+echo "Report generated at: $(date)" >> "$LOGFILE"
+
+# EC2 Info
+echo -e "\nEC2 Instances:" >> "$LOGFILE"
+aws ec2 describe-instances >> "$LOGFILE"
+
+# S3 Buckets
+echo -e "\nS3 Buckets:" >> "$LOGFILE"
+aws s3 ls >> "$LOGFILE"
+
+# Lambda
+echo -e "\nLambda Functions:" >> "$LOGFILE"
+aws lambda list-functions >> "$LOGFILE"
+
+# Email it
+(
+  echo "Subject: AWS Weekend Report"
+  echo "To: $TO"
+  echo "From: $FROM"
+  echo
+  cat "$LOGFILE"
+) | msmtp "$TO"
+```
+
+✅ Don’t forget:
+
+```bash
+chmod +x /home/ubuntu/aws-resource-report.sh
+```
+
+---
+
+### 📦 2. Installed What I Needed
+
+```bash
+sudo apt update
+sudo apt install awscli jq msmtp msmtp-mta -y
+```
+
+Set up AWS:
+
+```bash
+aws configure
+```
+
+---
+
+### 📬 3. Configured `msmtp` with SendGrid
+
+I signed up at [SendGrid](https://sendgrid.com/), created an API key, and used this `.msmtprc`:
+
+```ini
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.msmtp.log
+
+account        sendgrid
+host           smtp.sendgrid.net
+port           587
+from           your_verified_sender@gmail.com
+user           apikey
+password       SG.xxxxxxxx
+
+account default : sendgrid
+```
+
+Secured it:
+
+```bash
+chmod 600 ~/.msmtprc
+```
+
+---
+
+### ⏰ 4. Scheduled it in Crontab
+
+Opened crontab:
+
+```bash
+crontab -e
+```
+
+Added this line to run it **every 10 minutes on Saturdays and Sundays**:
+
+```bash
+*/10 * * * 6,7 /home/ubuntu/aws-resource-report.sh >> /home/ubuntu/cron-debug.log 2>&1
+```
+
+---
+
+## 📈 How I Monitored the Cron Job
+
+At first, I wasn’t sure cron was even doing anything… so I started tracking it like this:
+
+### 🔍 Option 1: Syslog Logs
+
+```bash
+grep CRON /var/log/syslog
+```
+
+That showed me:
+```
+CRON[xxxx]: (ubuntu) CMD (/home/ubuntu/aws-resource-report.sh)
+```
+
+So, yeah — cron was waking up and running stuff ✅
+
+---
+
+### 📓 Option 2: Logging Inside the Script
+
+I added this line to the top of my script to be sure:
+
+```bash
+echo "$(date): Cron ran the script" >> /home/ubuntu/cron-debug.log
+```
+
+That log helped me figure out if it ran and whether it failed silently. Super helpful.
+
+---
+
+## 🧩 Challenges I Faced (and How I Fixed Them)
+
+### ❗ **Cron ran but didn’t email me**
+
+Turns out EC2 blocks port 25 by default.  
+✅ I fixed this by switching to `msmtp` with SendGrid over port 587.
+
+---
+
+### ❗ **SendGrid said “from domain not verified”**
+
+Yeah... I was trying to send from a random email.  
+✅ Solution: I created a **Single Sender** in SendGrid and verified it. Easy fix.
+
+---
+
+### ❗ **Output looked blank or email failed silently**
+
+SendGrid is picky. You **must include a subject and either plain text or HTML**.  
+✅ I added the Subject, To, From headers manually in the message — boom, success!
+
+---
+
+### ❗ **Cron job didn’t run at all**
+
+😅 Rookie move — forgot to make the script executable.  
+✅ `chmod +x` fixed it.
+
+---
+
+## 📷 Screenshot
+
+> _Attach your screenshot below 👇_  
+> (You can upload an image and reference it like this:)
+
+```markdown
+![AWS Report Email](./aws-report-screenshot.png)
+```
+
+---
+
+## ✅ What I Ended Up With
+
+- A working script that emails me AWS resource reports
+- Cron automation that runs every weekend
+- Peace of mind 💆‍♂️
+
+---
+
+## 💬 Questions? Suggestions?
+
+Drop a comment or open an issue — happy to improve this or help out if you're trying the same thing.
+
+---
+
+Let me know if you'd like help turning this into a full GitHub repo or GitHub Pages blog post!
