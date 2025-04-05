@@ -8,8 +8,8 @@
 ##############################
 
 LOGFILE="/home/ubuntu/aws-report.log"
-TO="ssibbya@gmail.com"
-FROM="MS_g4PSGw@test-ywj2lpnq5pmg7oqz.mlsender.net"
+TO="recipient@example.com"
+FROM="sender@example.com"
 
 >"$LOGFILE"
 
