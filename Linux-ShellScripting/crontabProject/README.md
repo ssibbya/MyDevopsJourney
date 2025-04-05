@@ -246,6 +246,8 @@ which jq
 ## ✅ What I Ended Up With
 
 - A working script that emails me AWS resource reports
+<img width="823" alt="Screenshot 2025-04-06 at 12 35 57 AM" src="https://github.com/user-attachments/assets/70fd544f-6e5f-4e42-bb04-262f8ee4e23f" />
+
 - Cron automation that runs every weekend
 - Peace of mind 💆‍♂️
 
