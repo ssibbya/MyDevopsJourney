@@ -21,41 +21,7 @@ Yup, full automation. No more manual `aws ec2 describe-instances` on sleepy Sund
 ### 🔧 1. Wrote a Bash Script
 
 I started with a simple script called `aws-resource-report.sh`. It collects my AWS resources and emails the log using `msmtp`.
-
-```bash
-#!/bin/bash
-
-LOGFILE="/home/ubuntu/aws-report.log"
-TO="recipient@gmail.com"
-FROM="your_verified_sender@gmail.com"
-
-# Clear old log
-> "$LOGFILE"
-
-# Timestamp
-echo "Report generated at: $(date)" >> "$LOGFILE"
-
-# EC2 Info
-echo -e "\nEC2 Instances:" >> "$LOGFILE"
-aws ec2 describe-instances >> "$LOGFILE"
-
-# S3 Buckets
-echo -e "\nS3 Buckets:" >> "$LOGFILE"
-aws s3 ls >> "$LOGFILE"
-
-# Lambda
-echo -e "\nLambda Functions:" >> "$LOGFILE"
-aws lambda list-functions >> "$LOGFILE"
-
-# Email it
-(
-  echo "Subject: AWS Weekend Report"
-  echo "To: $TO"
-  echo "From: $FROM"
-  echo
-  cat "$LOGFILE"
-) | msmtp "$TO"
-```
+Refer to **Linux-ShellScripting/crontabProject/aws-resource-report.sh**
 
 ✅ Don’t forget:
 
