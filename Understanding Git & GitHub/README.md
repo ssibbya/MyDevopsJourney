@@ -186,15 +186,6 @@ git push
 
 ---
 
-## 📌 Bonus Tips
-
-- `git log <branch>` – Check commit history of a specific branch  
-- `git checkout <branch> && git log` – Navigate and explore logs  
-- `git cherry-pick <commit-id>` – Bring a single commit into current branch  
-- `git stash` – Temporarily save your work without committing  
-
----
-
 🔗 Feel free to fork this repo and improve the content. Contributions are welcome!  
 Happy version-controlling! ✨
 
