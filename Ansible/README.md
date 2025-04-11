@@ -64,36 +64,47 @@ Before enabling passwordless authentication to target server, you will get an er
 ssh<Private IP address of target server>
 ubuntu@<Private IP>: Permission denied (publickey).
 ```
-#### Steps to Enable Passwordless SSH Authentication
-1. Generate SSH Key on the Control Node
-   
-  Run: `ssh-keygen`
-  
-  This creates a .ssh directory containing:
-  
-  `id_ed25519` (Private Key)
-  
-  `id_ed25519.pub` (Public Key)
-  
-  `authorized_keys` (if existing)
+#### 🔐 Enabling Passwordless SSH Authentication
 
-2. Copy the Public Key to the Target Server
-   
-  Run: `ssh-copy-id <user>@<target-server>`
-  
-  This appends the public key to the target server’s ~/.ssh/authorized_keys file.
+To allow Ansible to connect to EC2 instances without prompting for a password, follow these steps:
 
-3. Alternatively (Manual Method)
+Step 1: Generate SSH Key on the Control Node
 
-  SSH into the target server.
-  
-  Create a key pair on the target if needed: `ssh-keygen`
-  
-  Manually copy the public key from the control node.
-  
-  Paste it into the ~/.ssh/authorized_keys file on the target server.
+Run the following command:
+```bash
+ssh-keygen
+```
+This creates a `.ssh` directory (if not already present) containing:
+- `id_ed25519` (Private Key)
+- `id_ed25519.pub` (Public Key)
+- `authorized_keys` (if already exists)
 
-This allows Ansible to run tasks remotely without a password.
+Step 2: Copy the Public Key to the Target Server
+
+Use:
+```bash
+ssh-copy-id <user>@<target-server>
+```
+This appends the control node's public key to the target server’s `~/.ssh/authorized_keys` file.
+
+Step 3: Alternatively (Manual Method)
+
+If `ssh-copy-id` is not available, follow these steps:
+- SSH into the target server.
+- Generate a key pair (if needed):
+  ```bash
+  ssh-keygen
+  ```
+- On the control node, copy the content of the public key (`id_ed25519.pub`).
+- On the target server, open the `authorized_keys` file and paste the copied content:
+  ```bash
+  nano ~/.ssh/authorized_keys
+  ```
+  Save and close the file.
+
+Once done, passwordless SSH authentication should work from the control node to the target server.
+
+
 
 ### Create Inventory file to store all IP addresses of target servers
 Add server IP addresses in inventory file:
