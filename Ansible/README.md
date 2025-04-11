@@ -76,9 +76,16 @@ Group target hosts in your inventory file:
 ```ini
 [dbserver]
 172.31.26.10
-
+172.31.26.11
+172.31.26.12
 [webserver]
 172.31.16.10
+172.31.16.11
+172.31.16.12
+```
+to apply the changes in any group execute the command like this,
+```bash
+ansible -i inventory <group> -m shell -a "touch testfile.txt"
 ```
 
 ## 📜 Ansible Playbooks
@@ -88,9 +95,9 @@ Use YAML to define a sequence of tasks.
 
 Run using:
 ```bash
-ansible-playbook -i inventory playbook.yml
+ansible-playbook -i inventory all playbook.yml
 ```
-Use `-vvv` for verbose logging.
+Use verbose `-v`/ `vv`/`vvv` to see different level of logging.
 
 ## 📦 Ansible Roles
 Ansible roles help organize playbooks into reusable and modular components.
