@@ -190,3 +190,61 @@ Each directory has a specific purpose:
 - **tests/**: Validate the role.
 
 ---
+
+## 🔐 What is Ansible Vault?
+
+Ansible Vault lets you encrypt files or variables so that even if someone gets access to your playbook, they won’t see secrets in plain text.
+
+### 🔧 Common Use Cases
+- Encrypting variables (`vars.yml`)
+- Securing entire playbooks or roles
+- Keeping credentials, tokens, or keys secret
+
+### 🧪 Hands-On: Step-by-Step Guide
+
+#### ✅ 1. Create an Encrypted File
+```bash
+ansible-vault create secret.yml
+```
+It’ll open your default editor (like nano or vim). You can add variables like:
+
+```yaml
+aws_access_key: AKIA***********
+aws_secret_key: abcdefghijklmnopqrst123456
+```
+Save and exit. This file is now encrypted.
+
+#### ✅ 2. View the Encrypted File
+```bash
+ansible-vault view secret.yml
+```
+It'll prompt for your vault password and show the decrypted content.
+
+#### ✅ 3. Edit Encrypted File
+```bash
+ansible-vault edit secret.yml
+```
+Just like create, but lets you modify an existing encrypted file.
+
+#### ✅ 4. Use Vault-Encrypted Variables in Playbook
+Example `site.yml`:
+
+```yaml
+---
+- name: Secure example
+  hosts: all
+  become: true
+
+  vars_files:
+    - secret.yml
+
+  tasks:
+    - name: Show the AWS key
+      debug:
+        msg: "Access key is {{ aws_access_key }}"
+```
+
+Run this with:
+```bash
+ansible-playbook site.yml --ask-vault-pass
+```
