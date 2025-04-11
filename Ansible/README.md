@@ -91,7 +91,9 @@ ansible -i inventory all -m shell -a "touch devOps"
 ```
 - `-m`: Module
 - `-a`: Argument
-[Ansible modules and arguments](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
+
+[Click Here](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html) to refer all the Ansible modules and arguments 
+
 To apply the changes in any by group wise,
 ```bash
 ansible -i inventory <groupname> -m shell -a "ls -ltr"
