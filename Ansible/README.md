@@ -64,14 +64,14 @@ ansible --version
 
 This allows Ansible to run tasks remotely without a password.
 
-## 🧾 Ansible Ad-hoc Commands
-Quick one-off commands like:
-```bash
-ansible -i inventory all -m shell -a "touch devOps"
+### Create Inventory file to store all IPs of target servers
+Add server IP addresses in inventory file:
+```ini
+172.31.26.10
+172.31.26.11
+172.31.26.12
 ```
-- `-m`: Module
-- `-a`: Argument
-
+OR 
 Group target hosts in your inventory file:
 ```ini
 [dbserver]
@@ -83,11 +83,18 @@ Group target hosts in your inventory file:
 172.31.16.11
 172.31.16.12
 ```
-to apply the changes in any group execute the command like this,
+## 🧾 Ansible Ad-hoc Commands
+Quick one-off commands like:
 ```bash
-ansible -i inventory <group> -m shell -a "touch testfile.txt"
+ansible -i inventory all -m shell -a "touch devOps"
 ```
-
+- `-m`: Module
+- `-a`: Argument
+[Ansible modules and arguments](https://docs.ansible.com/ansible/2.9/modules/list_of_all_modules.html)
+To apply the changes in any by group wise,
+```bash
+ansible -i inventory <groupname> -m shell -a "ls -ltr"
+```
 ## 📜 Ansible Playbooks
 Use YAML to define a sequence of tasks.
 
@@ -97,7 +104,7 @@ Run using:
 ```bash
 ansible-playbook -i inventory all playbook.yml
 ```
-Use verbose `-v`/ `vv`/`vvv` to see different level of logging.
+Use verbose `-v`/ `vv`/`vvv` to see different detailed level of logging.
 
 ## 📦 Ansible Roles
 Ansible roles help organize playbooks into reusable and modular components.
