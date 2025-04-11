@@ -59,8 +59,39 @@ ansible --version
 ```
 
 ### 🔐 Passwordless SSH (pre-requisite)
-1. Generate SSH key: `ssh-keygen`
-2. Copy public key to target server: `ssh-copy-id <user>@<target-server>`
+Before enabling passwordless authentication to target server, you will get an error:
+```shell
+ssh<Private IP address of target server>
+ubuntu@<Private IP>: Permission denied (publickey).
+```
+#### Steps to Enable Passwordless SSH Authentication
+1. Generate SSH Key on the Control Node
+   
+Run: `ssh-keygen`
+
+This creates a .ssh directory containing:
+
+`id_ed25519` (Private Key)
+
+`id_ed25519.pub` (Public Key)
+
+`authorized_keys` (if existing)
+
+2. Copy the Public Key to the Target Server
+   
+Run: `ssh-copy-id <user>@<target-server>`
+
+This appends the public key to the target server’s ~/.ssh/authorized_keys file.
+
+4. Alternatively (Manual Method)
+
+SSH into the target server.
+
+Create a key pair on the target if needed: `ssh-keygen`
+
+Manually copy the public key from the control node.
+
+Paste it into the ~/.ssh/authorized_keys file on the target server.
 
 This allows Ansible to run tasks remotely without a password.
 
