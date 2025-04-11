@@ -101,8 +101,7 @@ ansible -i inventory <groupname> -m shell -a "ls -ltr"
 ## 📜 Ansible Playbooks
 Use YAML to define a sequence of tasks.
 
-<i>Refer first_playbook.yml<i>
-
+Refer first_playbook.yml
 Run using:
 ```bash
 ansible-playbook -i inventory all playbook.yml
