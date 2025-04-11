@@ -1,0 +1,32 @@
+---
+# This is the beginning of the Ansible playbook
+
+- name: Install and start Nginx
+  # A descriptive name for the playbook
+  hosts: all
+  # Target group of hosts (can be 'all' or a specific group defined in your inventory)
+  become: true
+  # Escalates privilege to root user (using sudo)
+
+  tasks:
+    # The list of tasks to be executed on the target hosts
+
+    - name: Install Nginx
+      # Descriptive name for the task
+      apt:
+        name: nginx
+        # Name of the package to install
+        state: present
+        # Ensures the package is installed (present)
+        update_cache: yes
+        # Updates the apt cache before installation
+
+    - name: Start Nginx
+      # Descriptive name for the task
+      service:
+        name: nginx
+        # Name of the service to manage
+        state: started
+        # Ensures the service is running
+        enabled: yes
+        # Ensures the service starts on boot
