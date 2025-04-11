@@ -64,7 +64,7 @@ ansible --version
 
 This allows Ansible to run tasks remotely without a password.
 
-### Create Inventory file to store all IPs of target servers
+### Create Inventory file to store all IP addresses of target servers
 Add server IP addresses in inventory file:
 ```ini
 172.31.26.10
@@ -72,7 +72,8 @@ Add server IP addresses in inventory file:
 172.31.26.12
 ```
 OR 
-Group target hosts in your inventory file:
+
+Group target IP hosts in your inventory file like:
 ```ini
 [dbserver]
 172.31.26.10
