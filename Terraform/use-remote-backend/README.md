@@ -50,69 +50,24 @@ Yes, technically it's optional. You can use only S3 as a backend, and Terraform 
 - It's strongly recommended when working in **production or shared environments**.
 
 ---
+## 🔍 Why use_lockfile = true Instead of dynamodb_table
+The new use_lockfile = true parameter is part of Terraform's improved backend configuration. This flag:
+
+- Enables locking using DynamoDB automatically, without explicitly specifying dynamodb_table = "table-name".
+
+- Simplifies configuration by auto-detecting the appropriate DynamoDB table based on your state and setup.
+
+- Ideal for users who already have Terraform state and lock table managed together in their infrastructure.
+
+Note: You still need to create the DynamoDB table manually (or through Terraform), but you don’t need to reference it in the backend block if use_lockfile = true.
+---
 
 ## 🛠️ Commands to Run
-
 ```bash
 terraform init         # Initializes the configuration and sets up the backend
 terraform plan         # Shows what changes will be made
 terraform apply        # Applies the infrastructure changes
 terraform destroy      # Destroys all created resources
-```
-
----
-
-## 📄 main.tf Summary
-
-```hcl
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-
-  backend "s3" {
-    bucket         = "store-tfstate-bucket"
-    key            = "envs/dev/terraform.tfstate"
-    region         = "us-east-1"
-    use_lockfile   = true
-  }
-}
-
-provider "aws" {
-  region = "us-east-1"
-}
-
-# EC2 instance
-resource "aws_instance" "web" {
-  ami           = "ami-084568db4383264d4"
-  instance_type = "t2.micro"
-  tags = {
-    Name = "HelloWorld"
-  }
-}
-
-# S3 Bucket for tfstate
-resource "aws_s3_bucket" "storetf" {
-  bucket = "store-tfstate-bucket"
-  tags = {
-    Name = "tf State files"
-  }
-}
-
-# DynamoDB table for locking
-resource "aws_dynamodb_table" "terraform_lock" {
-  name         = "terraform-lock"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockId"
-
-  attribute {
-    name = "LockId"
-    type = "S"
-  }
-}
 ```
 
 ---
