@@ -54,12 +54,9 @@ Yes, technically it's optional. You can use only S3 as a backend, and Terraform 
 The new use_lockfile = true parameter is part of Terraform's improved backend configuration. This flag:
 
 - Enables locking using DynamoDB automatically, without explicitly specifying dynamodb_table = "table-name".
-
 - Simplifies configuration by auto-detecting the appropriate DynamoDB table based on your state and setup.
-
 - Ideal for users who already have Terraform state and lock table managed together in their infrastructure.
-
-Note: You still need to create the DynamoDB table manually (or through Terraform), but you don’t need to reference it in the backend block if use_lockfile = true.
+- Note: You still need to create the DynamoDB table manually (or through Terraform), but you don’t need to reference it in the backend block if use_lockfile = true.
 ---
 
 ## 🛠️ Commands to Run
