@@ -85,9 +85,9 @@ Users --> Jenkins --> .tf files in GitHub --> AWS
 
 ### 🔄 Real World Scenarios
 
-- **Scenario 1**: Org users without AWS access trigger Terraform pipelines to create infra and receive output info via `output.tf`.
+- **Scenario 1**: Assume if users do not have direct access to create AWS resourses they uses AWS access to trigger Terraform pipelines to create infrastructure and receive output info via `output.tf`.
 
-- **Scenario 2**: Two users attempt to update the same resource. **DynamoDB lock** prevents simultaneous changes to the `.tfstate` file.
+- **Scenario 2**: Two users attempt to update the same resource simultaneously. **DynamoDB lock** prevents simultaneous changes to the `.tfstate` file.
 
 ---
 
