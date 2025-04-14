@@ -32,7 +32,7 @@ backend "s3" {
 ```
 
 This configuration sets up an S3 backend to **store your Terraform state file remotely**, ensuring that your infrastructure changes are tracked and collaborative-safe.
-
+<img width="886" alt="Screenshot 2025-04-14 at 10 49 46 AM" src="https://github.com/user-attachments/assets/06030a7c-3b6d-4be8-a14e-2267cc36db12" />
 ---
 
 ## 🗃️ Why DynamoDB is Optional (But Recommended)
