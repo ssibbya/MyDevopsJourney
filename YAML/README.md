@@ -96,7 +96,7 @@ This document provides detailed notes and examples from the YAML configuration l
     import yaml
 
     # Reading a single YAML document
-    with open("config.yaml", 'r') as f:
+    with open("multi_doc.yaml", 'r') as f:
         data = yaml.safe_load(f)
         print(data)
 
@@ -105,7 +105,24 @@ This document provides detailed notes and examples from the YAML configuration l
         for doc in yaml.load_all(f, Loader=yaml.FullLoader): # Use FullLoader for all YAML features
             print(doc)
     ```
-
+   ```yaml
+   # multi_doc.yaml
+   # Document 1
+   app: Web Server
+   port: 8080
+   ---
+   # Document 2
+   app: Database
+   port: 5432
+   ```
+Output:
+```python
+   #Output of safe_load
+   {'app': 'Web Server', 'port': 8080}
+   #Output of load_all
+   {'app': 'Web Server', 'port': 8080}
+   {'app': 'Database', 'port': 5432}
+```
 * **Writing YAML Files (`yaml.dump()`):**
     * `yaml.dump(data, file)`: Serializes a Python object into a YAML stream and writes it to a file.
 
