@@ -328,6 +328,9 @@ spec:
     image: nginx:latest
     ports:
     - containerPort: 80
+```
+## YAML in Docker Compose
+```yaml
 # Example Docker Compose file (docker-compose.yml)
 version: '3.8'
 services:
