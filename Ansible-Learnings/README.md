@@ -1,4 +1,3 @@
-
 # Ansible for DevOps
 
 Ansible is a powerful configuration management tool used for automating infrastructure. It is simple to set up and operates in an agentless manner.
