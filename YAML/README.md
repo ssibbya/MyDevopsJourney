@@ -30,7 +30,7 @@ This document provides detailed notes and examples from the YAML configuration l
           web:
             image: nginx:latest
             ports:
-              - "80:80"
+              - 8080
         ```
 
 * **Language Agnostic:** YAML can be processed by various programming languages, allowing for easy data exchange and configuration management across different technology stacks. Libraries exist in Python (PyYAML), Ruby (Psych), JavaScript (js-yaml), and many others.
