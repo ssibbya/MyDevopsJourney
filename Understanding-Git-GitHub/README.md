@@ -83,7 +83,7 @@ Creates a `.git` folder to start version control in local.
 | `git log`                        | View commit history                          |
 | `git diff`                       | View unstaged changes                        |
 | `git reset --hard <commit>`     | Revert to a specific commit (destructive)    |
-| `git checkout <branch|commit>`  | Switch to another branch or commit           |
+| `git checkout <commit_id>`  | Switch to another branch or commit           |
 | `git branch`                    | List branches                                |
 | `git branch <name>`            | Create a new branch                          |
 | `git merge <branch>`           | Merge another branch into current            |
