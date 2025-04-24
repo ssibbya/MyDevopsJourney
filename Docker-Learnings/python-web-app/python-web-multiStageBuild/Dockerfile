@@ -16,7 +16,7 @@ RUN pip install --upgrade pip
 RUN pip install --prefix=/install -r requirements.txt
 
 # Copy entire Django project
-COPY . .
+COPY ./djangoproject/ .
 
 # -------------------------
 # Stage 2 – Runtime stage
