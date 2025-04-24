@@ -6,6 +6,7 @@ FROM python:3.12-slim AS builder
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=djangoproject.settings
 
 # Set work directory
 WORKDIR /app
@@ -26,6 +27,7 @@ FROM python:3.12-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SETTINGS_MODULE=djangoproject.settings
 
 # Set work directory
 WORKDIR /app
