@@ -87,6 +87,7 @@ Creates a `.git` folder to start version control in local.
 | `git branch`                    | List branches                                |
 | `git branch <name>`            | Create a new branch                          |
 | `git merge <branch>`           | Merge another branch into current            |
+| `git reset --hard origin/main`           | resets uncommited changes as original            |
 
 ---
 
