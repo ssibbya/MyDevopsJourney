@@ -57,7 +57,7 @@ docker build -t my-django-app .
 ```
 Run the Container
 ```bash
-docker run -d -p 8000:8000 my-django-app
+docker run -p 8000:8000 -it my-django-app
 ```
 Access the app via: http://localhost:8000/
 
@@ -89,5 +89,7 @@ Access the app via: http://localhost:8000/
 Tag and push the image to Docker Hub:
 
 ```bash
+doker login
 docker tag my-django-app yourusername/my-django-app:latest
 docker push yourusername/my-django-app:latest
+```
