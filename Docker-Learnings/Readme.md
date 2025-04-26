@@ -1,4 +1,3 @@
-```markdown
 # 🐳 Docker: Bind Mounts & Volumes
 
 This guide explains how Docker handles persistent data using **Bind Mounts** and **Volumes**, with real-world examples and commands.
