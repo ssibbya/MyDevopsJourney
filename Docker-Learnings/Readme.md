@@ -117,8 +117,6 @@ Changes made inside a container:
 
 ## 🏛️ Docker Architecture
 
-![Docker Architecture](link-to-your-architecture-image)
-
 - **Docker Daemon (`dockerd`)**:  
   The brain of Docker! It listens to Docker API requests and manages Docker objects like images, containers, networks, and volumes.  
   > If the daemon stops, Docker becomes **brain-dead** (sarcasm intended 😄).
