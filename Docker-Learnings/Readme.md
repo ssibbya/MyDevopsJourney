@@ -116,82 +116,81 @@ This guide explains how Docker manages container networking, including **bridge*
 ## ❗ Why Networking Matters in Docker
 
 - **Default networking in Docker** is via a **bridge network**.
-- Containers **cannot communicate** with the host network directly without the bridge.
+- Containers **cannot communicate** with the outside world without a bridge.
 - Docker provides a **virtual Ethernet bridge** called `docker0` that connects containers to the host and to each other.
 
 ---
 
 ## 🌉 1. Bridge Networking (Default)
 
-- Docker creates a default bridge (`docker0`) to manage container communication.
-- Containers get a **private IP address** and use `docker0` to connect to the host or other containers.
-- Without a bridge, containers would not be able to reach the outside network easily.
+When you run a container, Docker attaches it to the default bridge network.
 
----
-
-## 🖥️ 2. Host Networking
-
-- With host networking, Docker **binds the container directly** to the host’s `eth0` interface.
-- The container shares the host’s IP address and network stack.
-- No bridge (`docker0`) is involved.
-- Useful when high network performance or simplicity is needed.
-
----
-
-## ⚠️ Problem with Bridge and Host Networks
-
-- Containers connected to the default bridge (`docker0`) or using the host network **share** the **veth0** (virtual Ethernet interface).
-- **Security Risk:**  
-  If containers need **complete isolation**, sharing the same `veth0` can expose sensitive information to attackers.
-- **Host network** can't solve this because it shares the **same CIDR IP range** with the host.
-
----
-
-## ✅ Solution: Custom Bridge Network
-
-- Docker allows the creation of **custom bridge networks** to isolate container communication.
-- **Custom networks provide:**  
-  - Isolated environments
-  - Better security
-  - User-defined subnets and IP management
-
----
-
-## 🛠️ Key Docker Commands
-
-### 1. Run a container using the default bridge network:
+### Step 1: Run a container (default bridge network)
 ```bash
-docker run -d --name login nginx:latest
+docker run -d --name container1 nginx:latest
 ```
 
-### 2. Login to the container:
+### Step 2: Login into the container
 ```bash
-docker exec -it login /bin/bash
+docker exec -it container1 /bin/bash
 ```
 
-### 3. Install `ping` inside the container:
+### Step 3: Install `ping` utility
 ```bash
 apt-get update && apt-get install -y iputils-ping
+ping -V //To check the version
 ```
 
-### 4. Create a secure custom bridge network:
+Now you can use `ping` from inside the container to communicate with external resources or other containers on the bridge.
+
+---
+
+## ⚠️ Problems with Default Bridge Networking
+
+- Containers on the same bridge share the virtual interface (`veth0`).
+- If attackers gain access to a container, they might sniff sensitive information across containers.
+- Default bridge networks and host networks share the same CIDR IP range, making isolation difficult.
+
+---
+
+## ✅ 2. Custom Bridge Network (Better Isolation)
+
+Docker allows creating **custom bridge networks** for secure communication between containers.
+
+### Step 1: Create a custom bridge network
 ```bash
 docker network create secure-network
 ```
 
-### 5. Run a container in the custom bridge network:
+### Step 2: Run a container on the custom network
 ```bash
-docker run -d --name finance --network=secure-network nginx:latest
+docker run -d --name container1 --network=secure-network nginx:latest
 ```
 
-- (Finance container is attached to the `secure-network`.)
+- Containers attached to `secure-network` are isolated from the default bridge network.
+- You can ping containers within the custom network but they are isolated from others.
 
-### 6. Run a container with host networking:
+---
+
+## 🖥️ 3. Host Networking (No Isolation)
+
+In host networking, the container shares the host’s network stack.
+
+### Example: Run a container using host network
 ```bash
-docker run -d --name demo --network=host nginx:latest
+docker run -d --name democontainer --network=host nginx:latest
 ```
 
-- (Demo container uses the host's network stack.)
+- No IP assignment from Docker; the container uses the host’s IP directly.
+- Useful for performance but **NOT secure**.
+
+---
+
+## 🌐 4. Overlay Networking (Short Overview)
+
+- **Overlay networks** connect containers across **multiple Docker hosts**.
+- Common in **Docker Swarm** and **Kubernetes** clusters.
+- Provides secure, scalable networking for large apps.
 
 ---
 
@@ -200,27 +199,32 @@ docker run -d --name demo --network=host nginx:latest
 | Network Type      | Description                                               |
 |-------------------|-----------------------------------------------------------|
 | `bridge` (default) | Containers get private IPs and connect through `docker0`. |
-| `host`             | Containers share host's network interface (no isolation). |
 | `custom bridge`    | Isolated container networks with user-defined settings.   |
-| `overlay`          | Allows containers to communicate across multiple hosts.   |
+| `host`             | Containers share the host’s network stack.                |
+| `overlay`          | Containers on different hosts can communicate securely.  |
 
 ---
 
-## 🌐 3. Overlay Networking (Brief Intro)
+## 🛠️ Summary of Useful Commands
 
-- **Overlay networks** connect containers across different Docker hosts.
-- Commonly used in **Docker Swarm** or **Kubernetes** for multi-host communication.
-- Secure and scalable for large distributed applications.
+| Action                              | Command Example |
+|-------------------------------------|-----------------|
+| Run container (default bridge)      | `docker run -d --name container1 nginx:latest` |
+| Enter container                     | `docker exec -it container1 /bin/bash` |
+| Install ping utility                | `apt-get update && apt-get install -y iputils-ping` |
+| Create custom bridge network        | `docker network create secure-network` |
+| Run container on custom network     | `docker run -d --name container1 --network=secure-network nginx:latest` |
+| Run container with host network     | `docker run -d --name demo --network=host nginx:latest` |
 
 ---
 
 ## 🧼 Final Notes
 
-- Use **default bridge** for basic setups.
-- Use **custom bridge** for better security and container isolation.
-- Use **host network** for performance-critical applications that don't need network isolation.
-- Use **overlay network** for multi-host communication.
+- Use **default bridge** for simple setups.
+- Use **custom bridge** for secure, isolated container communication.
+- Use **host networking** for maximum performance (but with caution).
+- Use **overlay networks** for distributed multi-host Docker applications.
 
 ---
 
-📚 Keep experimenting by creating custom networks, isolating services, and improving container security!
+🧪 Try setting up a custom bridge yourself and ping between containers for practice!
