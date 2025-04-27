@@ -104,8 +104,6 @@ docker inspect volumedemo
 ---
 
 🧪 Test it yourself and track logs or data between container restarts using volumes!
----
-Here’s a **clean, corrected, and professional `README.md`** based on your corrected notes:
 
 ---
 
