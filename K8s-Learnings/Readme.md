@@ -21,6 +21,31 @@ Containers are **ephemeral** by nature — they can be short-lived and prone to 
 
 ---
 
+Absolutely — here's the **updated and accurate comparison** including the **deprecation of `dockershim`**, with correct terminology and architecture for both Docker and Kubernetes. You can directly include this in your `README.md`.
+
+---
+
+## 🧱 Docker vs Kubernetes Architecture – Real-World Production Comparison
+
+### 🚢 Docker Architecture (Single Host)
+
+Docker is used to **build, ship, and run containers**. Its core building block is the **container**, and to run containers, it requires a **container runtime**.
+
+- In earlier versions, Docker used a component called `dockershim` to interface with Kubernetes. However, **`dockershim` has been deprecated and removed**. Kubernetes now interacts directly with runtimes like **`containerd`** or **CRI-O**, which follow the [Container Runtime Interface (CRI)].
+- Docker manages containers using the **Docker Engine**, which includes:
+  - Docker Daemon: Runs in the background and manages containers.
+  - Docker CLI: Command-line interface to interact with the daemon.
+  - Docker Image: A snapshot of your application with all dependencies.
+- Containers run on a **single machine**, and resources are shared among them.
+
+**Limitation Example**:
+Imagine you’re running a Node.js backend and a React frontend on Docker:
+- If the Node container uses too much CPU, the React container might crash.
+- There's no auto-restart or load balancing.
+- It's limited to one host — no clustering or multi-node deployment.
+
+---
+
 ## 🚀 Kubernetes Architecture
 
 Kubernetes architecture is based on a **master-worker** (control plane-data plane) model.
