@@ -74,9 +74,7 @@ Even though pods and containers run on **worker nodes**, Kubernetes needs a **ce
 
 ## 🖼️ Kubernetes Architecture Diagram
 
-![Kubernetes Architecture Diagram](https://d33wubrfki0l68.cloudfront.net/0efccbc1b3f9cf660cf7208f8436348c1092581c/6f2b4/images/docs/components-of-kubernetes.svg)
-
-> Image Source: [Kubernetes.io](https://kubernetes.io/docs/concepts/overview/components/)
+![Diagram-55](https://github.com/user-attachments/assets/8a8a4d71-b168-4ff3-bd62-1d84f57d6333)
 
 ---
 
