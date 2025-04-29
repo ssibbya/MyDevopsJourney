@@ -25,6 +25,8 @@ Containers are **ephemeral** by nature — they can be short-lived and prone to 
 
 Kubernetes architecture is based on a **master-worker** (control plane-data plane) model.
 
+![Diagram-55](https://github.com/user-attachments/assets/8a8a4d71-b168-4ff3-bd62-1d84f57d6333)
+
 ### 🧠 Control Plane (Master)
 
 Responsible for **cluster-wide decisions** like scheduling, scaling, and health monitoring.
@@ -69,10 +71,6 @@ Even though pods and containers run on **worker nodes**, Kubernetes needs a **ce
 | **Deployment** | Declarative update of ReplicaSets and pods |
 | **Services** | Abstraction to expose a set of pods as a network service |
 | **Namespaces** | Virtual clusters within a physical cluster for isolation |
-
----
-
-![Diagram-55](https://github.com/user-attachments/assets/8a8a4d71-b168-4ff3-bd62-1d84f57d6333)
 
 ---
 
