@@ -146,6 +146,8 @@ For modern DevOps and cloud-native environments, Kubernetes is a must-know tool.
 
 ## 🛠️ Hands-On Workflow 
 
+Sample pod.yaml: https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/simple-pod.yaml
+
 ### Start Minikube Cluster
 ```bash
 minikube start
@@ -215,6 +217,7 @@ kubectl delete pod <pod-name>
 - ❗ Avoid manually creating pods; use `deployment.yaml` for resilience, scaling, and best practices.
 
 #### Apply Deployment
+Sample deployment.yaml: https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/controllers/nginx-deployment.yaml
 ```bash
 kubectl apply -f deployment.yaml
 ```
