@@ -2,9 +2,9 @@
 
 ## 📖 Table of Contents
 - [What is Kubernetes](#what-is-kubernetes)
-- [Problems Kubernetes Solves](#️problems-kubernetes-solves-compared-to-docker)
+- [Problems Kubernetes Solves](#️why-kubernetes)
 - [Docker vs Kubernetes Architecture](#docker-vs-kubernetes-architecture)
-- [Kubernetes Architecture](#-kubernetes-architecture)
+- [Kubernetes Architecture](#kubernetes-architecture)
 - [Core Concepts](#core-concepts-in-kubernetes)
 - [Kubernetes Pod](#what-is-a-pod)
 - [Cluster Types](#kubernetes-cluster-types)
@@ -21,7 +21,7 @@ Containers are **ephemeral** by nature — they can be short-lived and prone to 
 
 ---
 
-## Problems Kubernetes Solves (Compared to Docker)
+## Why Kubernetes?
 
 | Problem | Docker Limitation | Kubernetes Solution |
 |--------|--------------------|---------------------|
@@ -98,7 +98,7 @@ Even though pods and containers run on **worker nodes**, Kubernetes needs a **ce
 
 ---
 
-## 🔄 Core Concepts in Kubernetes
+## Core Concepts in Kubernetes
 
 | Concept | Description |
 |--------|-------------|
