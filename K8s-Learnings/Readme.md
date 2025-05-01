@@ -6,7 +6,8 @@
 - [Docker vs Kubernetes Architecture](#-docker-vs-kubernetes-architecture)
 - [Kubernetes Architecture](#-kubernetes-architecture)
 - [Core Concepts](#-core-concepts-in-kubernetes)
-- [Hands-On Workflow](#-hands-on-workflow)
+- [Kubernetes Pod?](#-what-is-a-pod)
+- [Cluster Types](#-kubernetes-cluster-types)
 - [Deployments & Scaling](#-kubernetes-deployment)
 - [Kubernetes Services](#-kubernetes-services-svc)
 
@@ -35,7 +36,7 @@ Absolutely — here's the **updated and accurate comparison** including the **de
 
 ---
 
-## 🧱 Docker vs Kubernetes Architecture – Real-World Production Comparison
+## 🧱 Docker vs Kubernetes Architecture
 
 ### 🚢 Docker Architecture (Single Host)
 
