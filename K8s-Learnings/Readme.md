@@ -2,7 +2,7 @@
 
 ## 📖 Table of Contents
 - [What is Kubernetes](#what-is-kubernetes)
-- [Why Kubernetes](#️why-kubernetes)
+- [Why Kubernetes](#-why-kubernetes)
 - [Docker vs Kubernetes Architecture](#docker-vs-kubernetes-architecture)
 - [Kubernetes Architecture](#kubernetes-architecture)
 - [Core Concepts](#core-concepts-in-kubernetes)
