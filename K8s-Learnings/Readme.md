@@ -1,16 +1,15 @@
 # ☸️ Kubernetes - A Container Orchestration Platform
 
 ## 📖 Table of Contents
-- [What is Kubernetes](#-what-is-kubernetes)
-- [Problems Kubernetes Solves](#-problems-kubernetes-solves-compared-to-docker)
-- [Docker vs Kubernetes Architecture](#-docker-vs-kubernetes-architecture)
-- [Kubernetes Architecture](#-kubernetes-architecture)
-- [Core Concepts](#-core-concepts-in-kubernetes)
-- [Kubernetes Pod?](#-what-is-a-pod)
-- [Cluster Types](#-kubernetes-cluster-types)
-- [Deployments & Scaling](#-kubernetes-deployment)
-- [Kubernetes Services](#-kubernetes-services-svc)
-
+- [What is Kubernetes](#what-is-kubernetes)
+- [Problems Kubernetes Solves](#problems-kubernetes-solves-compared-to-docker)
+- [Docker vs Kubernetes Architecture](#docker-vs-kubernetes-architecture--real-world-production-comparison)
+- [Kubernetes Architecture](#kubernetes-architecture)
+- [Core Concepts](#core-concepts-in-kubernetes)
+- [Kubernetes Pod?](#what-is-a-pod)
+- [Cluster Types](#kubernetes-cluster-types)
+- [Deployments & Scaling](#kubernetes-deployment)
+- [Kubernetes Services](#kubernetes-services-svc)
 ---
 
 ## 📌 What is Kubernetes?
