@@ -2,7 +2,7 @@
 
 ## 📖 Table of Contents
 - [What is Kubernetes](#what-is-kubernetes)
-- [Problems Kubernetes Solves](#️why-kubernetes)
+- [Why Kubernetes](#️why-kubernetes)
 - [Docker vs Kubernetes Architecture](#docker-vs-kubernetes-architecture)
 - [Kubernetes Architecture](#kubernetes-architecture)
 - [Core Concepts](#core-concepts-in-kubernetes)
@@ -13,7 +13,7 @@
 
 ---
 
-## What is Kubernetes?
+## What is Kubernetes
 
 **Kubernetes** is an open-source container orchestration platform designed to automate the deployment, scaling, and management of containerized applications.
 
@@ -21,7 +21,7 @@ Containers are **ephemeral** by nature — they can be short-lived and prone to 
 
 ---
 
-## Why Kubernetes?
+## Why Kubernetes
 
 | Problem | Docker Limitation | Kubernetes Solution |
 |--------|--------------------|---------------------|
