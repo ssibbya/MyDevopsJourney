@@ -1,5 +1,36 @@
 # ☸️ Kubernetes - A Container Orchestration Platform
 
+## 📚 Table of Contents
+
+- [📌 What is Kubernetes?](#-what-is-kubernetes)
+- [🛠️ Problems Kubernetes Solves (Compared to Docker)](#️-problems-kubernetes-solves-compared-to-docker)
+- [🧱 Docker vs Kubernetes Architecture – Real-World Production Comparison](#-docker-vs-kubernetes-architecture--real-world-production-comparison)
+- [🚀 Kubernetes Architecture](#-kubernetes-architecture)
+  - [🧠 Control Plane (Master)](#-control-plane-master)
+  - [🔧 Data Plane (Worker Nodes)](#-data-plane-worker-nodes)
+- [📦 Why is Control Plane Needed?](#-why-is-control-plane-needed)
+- [🔄 Core Concepts in Kubernetes](#-core-concepts-in-kubernetes)
+- [✅ Summary](#-summary)
+- [What is a Pod?](#what-is-a-pod)
+  - [kubectl](#kubectl)
+  - [Why Use YAML?](#why-use-yaml)
+  - [Kubernetes Cluster Types](#kubernetes-cluster-types)
+- [Setup Steps](#setup-steps)
+  - [1. Required Tools](#1-install-tools)
+- [🛠️ Hands-On Workflow](#️-hands-on-workflow)
+- [Kubernetes Deployment](#kubernetes-deployment)
+  - [Difference: Container vs Pod vs Deployment](#difference-container-vs-pod-vs-deployment)
+  - [ReplicaSet vs Deployment](#replicaset-vs-deployment)
+  - [Apply Deployment](#apply-deployment)
+  - [View Resources](#view-resources)
+  - [Test Auto-Healing](#test-auto-healing)
+- [🔍 Other Useful Commands](#-other-useful-commands)
+- [# Kubernetes Services and Scaling - README](#kubernetes-services-and-scaling---readme)
+  - [Estimating Number of Pods](#estimating-number-of-pods)
+  - [Kubernetes Services (svc)](#kubernetes-services-svc)
+  - [Types of Kubernetes Services](#types-of-kubernetes-services)
+  - [External Access Example](#external-access-example)
+
 ---
 
 ## 📌 What is Kubernetes?
