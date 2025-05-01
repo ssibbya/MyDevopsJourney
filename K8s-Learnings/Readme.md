@@ -1,18 +1,19 @@
 # ☸️ Kubernetes - A Container Orchestration Platform
 
 ## 📖 Table of Contents
-- [What is Kubernetes](#what-is-kubernetes)
-- [Problems Kubernetes Solves](#problems-kubernetes-solves-compared-to-docker)
-- [Docker vs Kubernetes Architecture](#docker-vs-kubernetes-architecture--real-world-production-comparison)
-- [Kubernetes Architecture](#kubernetes-architecture)
-- [Core Concepts](#core-concepts-in-kubernetes)
+- [What is Kubernetes](#-what-is-kubernetes)
+- [Problems Kubernetes Solves](#️-problems-kubernetes-solves-compared-to-docker)
+- [Docker vs Kubernetes Architecture](#-docker-vs-kubernetes-architecture)
+- [Kubernetes Architecture](#-kubernetes-architecture)
+- [Core Concepts](#-core-concepts-in-kubernetes)
 - [Kubernetes Pod?](#what-is-a-pod)
 - [Cluster Types](#kubernetes-cluster-types)
 - [Deployments & Scaling](#kubernetes-deployment)
 - [Kubernetes Services](#kubernetes-services-svc)
+
 ---
 
-## 📌 What is Kubernetes?
+## What is Kubernetes?
 
 **Kubernetes** is an open-source container orchestration platform designed to automate the deployment, scaling, and management of containerized applications.
 
@@ -20,7 +21,7 @@ Containers are **ephemeral** by nature — they can be short-lived and prone to 
 
 ---
 
-## 🛠️ Problems Kubernetes Solves (Compared to Docker)
+## Problems Kubernetes Solves (Compared to Docker)
 
 | Problem | Docker Limitation | Kubernetes Solution |
 |--------|--------------------|---------------------|
@@ -35,7 +36,7 @@ Absolutely — here's the **updated and accurate comparison** including the **de
 
 ---
 
-## 🧱 Docker vs Kubernetes Architecture
+## Docker vs Kubernetes Architecture
 
 ### 🚢 Docker Architecture (Single Host)
 
@@ -56,7 +57,7 @@ Imagine you’re running a Node.js backend and a React frontend on Docker:
 
 ---
 
-## 🚀 Kubernetes Architecture
+## Kubernetes Architecture
 
 Kubernetes architecture is based on a **master-worker** (control plane-data plane) model.
 
@@ -109,7 +110,7 @@ Even though pods and containers run on **worker nodes**, Kubernetes needs a **ce
 
 ---
 
-## ✅ Summary
+## Summary
 
 Kubernetes is the **go-to platform** for running containerized applications in production. It addresses all the limitations of Docker by providing:
 
@@ -154,7 +155,7 @@ For modern DevOps and cloud-native environments, Kubernetes is a must-know tool.
 
 ---
 
-## 🛠️ Hands-On Workflow 
+## Hands-On Workflow 
 
 Sample pod.yaml: https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/pods/simple-pod.yaml
 
@@ -207,7 +208,7 @@ kubectl delete pod <pod-name>
         └── ReplicaSet
               └── Pod(s)
     ```
-#### ⚠️ Avoid Creating Pods Directly
+#### Avoid Creating Pods Directly
 - While it is useful for basic learning, creating pods directly with a `pod.yaml` is not recommended for production or scalable applications.
 - Pods created manually are not automatically restarted or replaced if they fail.
 - To benefit from features like:
