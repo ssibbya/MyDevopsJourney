@@ -257,3 +257,58 @@ kubectl delete pod <pod-name>
 Reference for `kubectl`: [https://kubernetes.io/docs/reference/kubectl/quick-reference/](https://kubernetes.io/docs/reference/kubectl/quick-reference/)
 
 ---
+# Kubernetes Services and Scaling - README
+
+## Estimating Number of Pods
+
+The ideal number of pods depends on the expected load and the capacity of each pod. You can estimate the number of pods needed with a simple formula:
+
+```
+Required Pods = Total Expected Load / Load Handled Per Pod
+```
+
+**Example:**
+- 1 pod can handle 10 requests per second.
+- If you expect 100 requests per second:
+
+```
+Required Pods = 100 / 10 = 10 Pods
+```
+
+---
+
+## Kubernetes Services (svc)
+
+When a Deployment creates Pods, each pod is assigned a new IP address. This becomes a problem if clients try to access the application using those IPs because they change when pods are recreated.
+
+### Why Use Services?
+- Provide a stable network identity and IP for accessing the pods.
+- Help in load balancing between pods.
+- Enable service discovery using labels and selectors.
+- Allow external access to the application when required.
+
+### Types of Kubernetes Services
+
+1. **ClusterIP (Default)**
+   - Accessible **only within** the Kubernetes cluster.
+   - Supports load balancing and service discovery.
+   - Good for internal microservice communication.
+
+2. **NodePort**
+   - Exposes the service on a **static port** on each worker node's IP.
+   - Accessible **within the organization** (if you have the node IP).
+   - Useful for testing or internal access without a cloud load balancer.
+
+3. **LoadBalancer**
+   - Exposes the service to the **external world** using a cloud provider's load balancer (e.g., AWS ELB).
+   - Automatically assigns a public IP.
+   - Requires a cloud controller manager (CCM) in cloud environments like EKS.
+
+![1_tnK94zrEwyNe1hL-PhJXOA](https://github.com/user-attachments/assets/82900451-4e00-4169-852b-d5f69f25f6e6)
+
+### External Access Example
+- In **Minikube**, you can’t access your app from outside using the pod IP directly.
+- Use services to route traffic appropriately.
+
+---
+
