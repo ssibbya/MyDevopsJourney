@@ -4,25 +4,25 @@ Now let's jump into one of the most essential building blocks in DevOps – **Li
 
 ---
 
-## 🐧 Why is Linux preferred in production over Windows or other OS?
+## Why is Linux preferred in production over Windows or other OS?
 - ✅ Free & Open-source
 - ✅ Secure and fast
 - ✅ Lightweight and highly customizable
 - ✅ Wide adoption in cloud environments
 - ✅ Popular distributions: Ubuntu, Red Hat, CentOS, Debian
 
-### 🧠 The Kernel – Heart of the OS
+### The Kernel – Heart of the OS
 The **Kernel** is the core part of Linux. It bridges software and hardware communication. Think of it like the engine of the OS.
 
 **Key Responsibilities:**
-- 🧩 Device Management
-- 🧠 Memory Management
-- 🏃 Process Management
-- ☎️ System Call Handling
+- Device Management
+- Memory Management
+- Process Management
+- System Call Handling
 
 ---
 
-## 🧱 OS Architecture Diagram
+## OS Architecture Diagram
 
 ```plaintext
 +-------------------+--------------------+---------------+
@@ -37,10 +37,10 @@ The **Kernel** is the core part of Linux. It bridges software and hardware commu
 
 ---
 
-## 💻 Shell Scripting Essentials
+## Shell Scripting Essentials
 Shell scripting allows automation and interaction with Linux systems efficiently.
 
-### 📁 Commonly Used Commands
+### Commonly Used Commands
 | Command  | Description                             |
 |----------|-----------------------------------------|
 | `mkdir`  | Create a new directory                  |
@@ -67,7 +67,7 @@ Shell scripting allows automation and interaction with Linux systems efficiently
 
 ---
 
-## 🔐 File Permissions & `chmod`
+## File Permissions & `chmod`
 Linux file permissions control access to files/folders.
 - **User (Owner)**, **Group**, and **Others (Everyone)**
 
@@ -99,13 +99,13 @@ for i in {1..5}; do
 done
 ```
 
-### ❌ Difference Between `break` and `continue`
+### Difference Between `break` and `continue`
 - `break` exits the loop entirely.
 - `continue` skips the current iteration and continues with the next.
 
 ---
 
-## ⏰ `crontab` – Schedule Tasks
+## `crontab` – Schedule Tasks
 `crontab` syntax has 5 fields:
 ```plaintext
 * * * * * command-to-execute
@@ -119,7 +119,7 @@ done
 
 ---
 
-## 🔗 Softlink vs Hardlink
+## Softlink vs Hardlink
 - **Softlink (Symbolic Link):** A pointer to the original file. If original file is deleted, the link breaks.
 - **Hardlink:** A direct copy of the file. It remains even if the original is deleted.
 
@@ -137,16 +137,16 @@ ln original.txt hardlink.txt
 
 ---
 
-## 🛠️ Network Troubleshooting Tools
+## Network Troubleshooting Tools
 
-### 📍 `traceroute`
+### `traceroute`
 Shows the path packets take to reach a destination.
 ```bash
 traceroute google.com
 ```
 It helps in diagnosing network latency and route hops.
 
-### 🧭 `tracepath`
+### `tracepath`
 Similar to `traceroute` but doesn't require root privileges.
 ```bash
 tracepath google.com
@@ -154,7 +154,7 @@ tracepath google.com
 
 ---
 
-## 📜 Log Management with `logrotate`
+## Log Management with `logrotate`
 System logs can grow huge over time. `logrotate` helps manage and rotate them automatically.
 
 - Rotates logs weekly/daily
