@@ -77,17 +77,17 @@ Creates a `.git` folder to start version control in local.
 | Command                          | Description                                   |
 |----------------------------------|-----------------------------------------------|
 | `git status`                     | Show current repo status                      |
-| `git add <file>`                | Stages a particular change for commit                     |
-| `git add .`                     | Stage all changes                            |
-| `git commit -m "message"`       | Commit staged changes                        |
-| `git log`                        | View commit history                          |
-| `git diff`                       | View unstaged changes                        |
-| `git reset --hard <commit>`     | Revert to a specific commit (destructive)    |
-| `git checkout <commit_id>`  | Switch to another branch or commit           |
-| `git branch`                    | List branches                                |
-| `git branch <name>`            | Create a new branch                          |
-| `git merge <branch>`           | Merge another branch into current            |
-| `git reset --hard origin/main`           | resets uncommited changes as original            |
+| `git add <file>`                | Stages a particular change for commit         |
+| `git add .`                     | Stage all changes                             |
+| `git commit -m "message"`       | Commit staged changes                         |
+| `git log`                        | View commit history                           |
+| `git diff`                       | View unstaged changes                         |
+| `git reset --hard <commit>`     | Revert to a specific commit (destructive)     |
+| `git checkout <commit_id>`      | Switch to another branch or commit            |
+| `git branch`                    | List branches                                 |
+| `git branch <name>`            | Create a new branch                           |
+| `git merge <branch>`           | Merge another branch into current             |
+| `git reset --hard origin/main` | Resets uncommitted changes to remote main     |
 
 ---
 
@@ -123,15 +123,71 @@ To retrieve:
 git stash apply
 ```
 
+### ✅ Use Case:
+You're in the middle of making changes, but need to switch branches to fix a bug. You don’t want to commit half-done work yet.
+
+### 💡 Example:
+```bash
+git status
+# Shows changes in file1.py and file2.py
+
+git stash
+# Stashes the changes
+
+git checkout main
+# Switch to main branch to fix a bug
+```
+
+When you're done:
+```bash
+git checkout your-feature-branch
+git stash apply
+# Brings back your changes
+```
+
 ---
 
-## 🍒 Merge vs Rebase vs Cherry-pick
+## 🔀 Merge vs Rebase vs Cherry-pick
 
-| Command                     | Purpose                                               |
-|----------------------------|-------------------------------------------------------|
-| `git merge <branch>`       | Merge a branch, preserving commit history            |
-| `git rebase <branch>`      | Reapply commits on top of another base (linear history) |
-| `git cherry-pick <commit>` | Apply a specific commit from another branch          |
+### 🔀 `git merge` — Combine Branches (Keep History)
+
+#### ✅ Use Case:
+You finished work on `feature/login` and want to merge it into `main`.
+
+#### 💡 Example:
+```bash
+git checkout main
+git merge feature/login
+```
+This keeps full history and adds a merge commit.
+
+---
+
+### 🧱 `git rebase` — Clean Linear History
+
+#### ✅ Use Case:
+You want a clean history without merge commits.
+
+#### 💡 Example:
+```bash
+git checkout feature/login
+git rebase main
+```
+This reapplies your commits on top of the latest `main` branch.
+
+---
+
+### 🍒 `git cherry-pick` — Copy a Specific Commit
+
+#### ✅ Use Case:
+You fixed a bug in `dev`, but want the fix in `main`.
+
+#### 💡 Example:
+```bash
+git checkout main
+git cherry-pick a1b2c3d
+```
+Where `a1b2c3d` is the commit hash.
 
 ---
 
