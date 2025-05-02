@@ -1,9 +1,7 @@
-# 🕒 Automating AWS Resource Reporting with Cron on EC2 (The Chill Weekend Way)
+# 🕒 Automating AWS Resource Reporting with Cron on EC2
 
 Hey there! 👋  
 This post is a quick walk-through of how I used `cron` on an EC2 Ubuntu instance to **automate AWS resource reporting** — EC2s, S3 buckets, Lambda functions — and have it land in my inbox automatically every weekend. 🌤️
-
-Yup, full automation. No more manual `aws ec2 describe-instances` on sleepy Sunday mornings. Let’s go. 🚀
 
 ---
 
