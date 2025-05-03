@@ -403,6 +403,8 @@ curl -L http://<minikubeIP>:8000/demo
 
 ## 🧪 Step 6: Inspect Traffic Using Kubeshark
 
+Kubeshark (formerly Mizu) is a network traffic analyzer for Kubernetes. It lets you see live, in-cluster traffic at the HTTP/gRPC level, without changing your apps.
+
 ### 1. Start Kubeshark
 ```bash
 kubeshark tap
@@ -420,7 +422,7 @@ curl -L http://<external-ip>:8000/demo
 ### 3. View traffic in real time in the Kubeshark UI:
 - Inspect HTTP requests/responses
 ```bash
-http://<externalIP>:8899/?q=http and request.path = "/demo"
+http://<externalIP>:8899/?q=http and request.path == "/demo"
 ```
 - Check source/destination pods
 - Debug headers, status codes, etc.
