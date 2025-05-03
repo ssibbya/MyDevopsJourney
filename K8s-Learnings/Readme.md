@@ -323,3 +323,110 @@ When a Deployment creates Pods, each pod is assigned a new IP address. This beco
 
 ---
 
+Great! Here's the **updated hands-on Kubernetes Services guide** including **Kubeshark** to inspect real-time network traffic. This version is clean, professional, and beginner-friendly.
+
+---
+
+# 🧪 Kubernetes Services – Hands-On Guide with Kubeshark
+
+This guide covers how to expose services using **NodePort** and **LoadBalancer**, and how to monitor traffic using **Kubeshark**.
+
+---
+
+## ✅ Prerequisites
+
+- Kubernetes cluster running via **Minikube**
+- `kubectl` configured
+- A sample deployment and service YAML (`deployment.yaml` and `services.yaml`)
+- **Kubeshark** installed (`brew install kubeshark/tap/kubeshark` or [docs](https://kubeshark.co/docs/install/))
+
+---
+
+## 🔧 Step 1: Deploy the Application
+
+Apply your deployment and service configuration:
+
+```bash
+kubectl apply -f deployment.yaml
+kubectl apply -f services.yaml
+```
+
+Check resources:
+
+```bash
+kubectl get pods
+kubectl get svc
+```
+
+---
+
+## 🌐 Step 2: Access the Service (NodePort)
+
+No need to SSH into the node. Use Minikube IP.
+
+### 1. Get Minikube IP
+```bash
+minikube ip
+```
+
+### 2. Access the service:
+```bash
+curl -L http://<minikube-ip>:<nodePort>/demo
+```
+
+---
+
+## 🔄 Step 3: Change to LoadBalancer
+
+Edit the service:
+
+```bash
+kubectl edit svc demo-service
+```
+
+Change type from NodePort to LoadBalancer:
+```yaml
+type: LoadBalancer
+```
+
+---
+
+## 🌍 Step 5: Access via LoadBalancer
+
+Check for external IP:
+
+```bash
+curl -L http://<minikubeIP>:8000/demo
+```
+
+---
+
+## 🧪 Step 6: Inspect Traffic Using Kubeshark
+
+### 1. Start Kubeshark
+```bash
+kubeshark tap
+```
+
+This launches a web UI and starts capturing traffic.
+
+> You’ll be prompted to open `http://localhost:8899` in your browser.
+
+### 2. Trigger a request:
+```bash
+curl -L http://<external-ip>:8000/demo
+```
+
+### 3. View traffic in real time in the Kubeshark UI:
+- Inspect HTTP requests/responses
+```bash
+http://<externalIP>:8899/?q=http and request.path = "/demo"
+```
+- Check source/destination pods
+- Debug headers, status codes, etc.
+<img width="1716" alt="Screenshot 2025-05-03 at 1 12 06 PM" src="https://github.com/user-attachments/assets/dbf02e22-2975-40d7-9196-f670386df824" />
+
+### 4. Stop Kubeshark
+Press `Ctrl+C` in the terminal to stop tapping.
+
+---
