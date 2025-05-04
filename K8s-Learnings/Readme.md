@@ -10,6 +10,7 @@
 - [Cluster Types](#kubernetes-cluster-types)
 - [Deployments & Scaling](#kubernetes-deployment)
 - [Kubernetes Services](#kubernetes-services-svc)
+- [Kubernetes Ingress](#kubernetes-ingress)
 
 ---
 
@@ -306,11 +307,9 @@ When a Deployment creates Pods, each pod is assigned a new IP address. This beco
    - Good for internal microservice communication.
 
 2. **NodePort**
-    
+
 * **NodePort** is a type of Kubernetes **Service** that exposes your application running inside the cluster **on a port of each worker node**.
 * This makes the app accessible from **outside the cluster**, as long as you know the IP address of **any** worker node and the **NodePort**.
-
----
 
 ### 🧠 How It Works Behind the Scenes
 
@@ -334,8 +333,6 @@ When a Deployment creates Pods, each pod is assigned a new IP address. This beco
    * The Service uses **label selectors** to find the matching Pods.
    * It then **load balances** traffic across the healthy Pods behind it.
 
----
-
 ### 🔁 Flow of a Request in NodePort
 
 ```
@@ -346,14 +343,10 @@ User → http://<NodeIP>:<NodePort>
      → Pod sends response back
 ```
 
----
-
 ### ✅ Use Case
 
 * **Best for development** or **internal testing**.
 * Not suitable for production-level public exposure (use **LoadBalancer** or **Ingress** instead).
-
----
 
 ### 📌 Example
 
@@ -372,10 +365,10 @@ spec:
       nodePort: 30080   # Node port (within 30000–32767)
 ```
 
-* If your node has IP `192.158.1.100`, you can access your app at:
+* If your node has IP `192.168.1.100`, you can access your app at:
 
   ```
-  http://192.158.1.100:30080
+  http://192.168.1.100:30080
   ```
 
 3. **LoadBalancer**
@@ -391,112 +384,179 @@ spec:
 
 ---
 
-Great! Here's the **updated hands-on Kubernetes Services guide** including **Kubeshark** to inspect real-time network traffic. This version is clean, professional, and beginner-friendly.
+Here’s a **clear and beginner-friendly explanation** of Kubernetes **Ingress**, along with your points refined, structured, and expanded for better flow:
 
 ---
 
-# 🧪 Kubernetes Services – Hands-On Guide with Kubeshark
+## Kubernetes Ingress
 
-This guide covers how to expose services using **NodePort** and **LoadBalancer**, and how to monitor traffic using **Kubeshark**.
+### Why Ingress?
 
----
+**Problem 1:**
+When organizations moved from traditional setups (like VMs) to Kubernetes, they noticed Kubernetes **LoadBalancer** service only offers **basic round-robin** traffic routing.
+But traditional systems (e.g., AWS ELB, F5, Nginx) supported:
 
-## ✅ Prerequisites
+* Sticky sessions
+* Weighted routing
+* IP allowlisting/denylists
+* WAF (Web Application Firewall)
+* TLS termination
+* Path-based or host-based routing
 
-- Kubernetes cluster running via **Minikube**
-- `kubectl` configured
-- A sample deployment and service YAML (`deployment.yaml` and `services.yaml`)
-- **Kubeshark** installed (`brew install kubeshark/tap/kubeshark` or [docs](https://kubeshark.co/docs/install/))
+**Problem 2:**
+For every **`LoadBalancer` service**, the **cloud provider charges** for:
 
----
+* Provisioning a **public IP address**
+* Running and maintaining the external load balancer
 
-## 🔧 Step 1: Deploy the Application
+**Ingress solves both problems** by providing a **smart, cost-effective gateway** for managing external access to your Kubernetes services.
 
-Apply your deployment and service configuration:
+## What Is Ingress?
 
-```bash
-kubectl apply -f deployment.yaml
-kubectl apply -f services.yaml
+* **Ingress** is **not a service** itself, but a **set of rules** to control **how external HTTP/HTTPS traffic** reaches your **internal Kubernetes services**.
+* It supports:
+
+  * **Path-based routing** (e.g., `/login`, `/products`)
+  * **Host-based routing** (e.g., `api.myapp.com`, `dashboard.myapp.com`)
+  * **SSL/TLS termination**
+  * **Centralized access control**
+
+## How Ingress Works
+
+```
+[Client Request]
+     ↓
+[Ingress Controller] <-- Smart load balancer (Nginx, HAProxy, Traefik, etc.)
+     ↓
+[Ingress Resource] <-- Rules for routing
+     ↓
+[Service]
+     ↓
+[Pods]
 ```
 
-Check resources:
+## Ingress vs Ingress Controller
+
+| Component              | Description                                                                                                                          |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| **Ingress**            | YAML configuration that defines routing rules.                                                                                       |
+| **Ingress Controller** | A **Pod** that listens to the Ingress resources and configures the load balancer accordingly. Examples: **NGINX, Traefik, HAProxy**. |
+| **Note**               | Without an Ingress Controller, Ingress rules are useless.                                                                            |
+
+## How to Enable Ingress in Minikube (Nginx Ingress Controller)
 
 ```bash
-kubectl get pods
+# Enable ingress in Minikube (automatically installs NGINX controller)
+minikube addons enable ingress
+
+# Optional: Check if ingress controller pods are running
+kubectl get pods -n ingress-nginx
+```
+
+Sample Ingress YAML: https://raw.githubusercontent.com/kubernetes/website/main/content/en/examples/service/networking/ingress-wildcard-host.yaml
+
+## Commands to Test
+
+```bash
+kubectl apply -f ingress.yaml
+kubectl get ingress
 kubectl get svc
+kubectl get pods -A
+kubectl logs <controller-pod-name> -n ingress-nginx
 ```
 
----
-
-## 🌐 Step 2: Access the Service (NodePort)
-
-No need to SSH into the node. Use Minikube IP.
-
-### 1. Get Minikube IP
-```bash
-minikube ip
-```
-
-### 2. Access the service:
-```bash
-curl -L http://<minikube-ip>:<nodePort>/demo
-```
-
----
-
-## 🔄 Step 3: Change to LoadBalancer
-
-Edit the service:
+> To access the app via custom domain (e.g., `myapp.local`), update your **`/etc/hosts`** file:
 
 ```bash
-kubectl edit svc demo-service
+sudo vi /etc/hosts
+# Add this line
+127.0.0.1   myapp.local
 ```
 
-Change type from NodePort to LoadBalancer:
-```yaml
-type: LoadBalancer
-```
+## Benefits of Ingress
 
----
+* Only **one LoadBalancer** for the whole cluster (cost-effective)
+* Acts as **API Gateway**
+* **TLS termination** support
+* Supports advanced rules like:
 
-## 🌍 Step 5: Access via LoadBalancer
+  * Path and host-based routing
+  * Header-based routing (with extensions)
+  * Rate limiting and authentication (with plugins)
 
-Check for external IP:
+## Ingress Controller Options
 
-```bash
-curl -L http://<minikubeIP>:8000/demo
-```
+| Controller             | Description                                |
+| ---------------------- | ------------------------------------------ |
+| **NGINX**              | Most popular, easy to use                  |
+| **HAProxy**            | High performance                           |
+| **Traefik**            | Supports auto-discovery, dynamic configs   |
+| **AWS ALB Controller** | For EKS users needing deep AWS integration |
 
----
 
-## 🧪 Step 6: Inspect Traffic Using Kubeshark
+## 🧭 More Ingress Concepts — Deep Dive
 
-Kubeshark (formerly Mizu) is a network traffic analyzer for Kubernetes. It lets you see live, in-cluster traffic at the HTTP/gRPC level, without changing your apps.
+### 🔄 **Host-Based vs Path-Based vs Wildcard Routing**
 
-### 1. Start Kubeshark
-```bash
-kubeshark tap
-```
+These are different routing techniques supported by Ingress rules:
 
-This launches a web UI and starts capturing traffic.
+#### 🏠 **Host-Based Routing**
 
-> You’ll be prompted to open `http://localhost:8899` in your browser.
+* Routes traffic based on domain name (host header).
+* Common when hosting **multiple applications** on the same cluster.
+* Example:
 
-### 2. Trigger a request:
-```bash
-curl -L http://<external-ip>:8000/demo
-```
+  * `admin.myapp.com` → Admin Service
+  * `user.myapp.com` → User Service
 
-### 3. View traffic in real time in the Kubeshark UI:
-- Inspect HTTP requests/responses
-```bash
-http://<externalIP>:8899/?q=http and request.path == "/demo"
-```
-- Check source/destination pods
-- Debug headers, status codes, etc.
-<img width="1716" alt="Screenshot 2025-05-03 at 1 12 06 PM" src="https://github.com/user-attachments/assets/dbf02e22-2975-40d7-9196-f670386df824" />
+#### 🛣️ **Path-Based Routing**
 
-### 4. Stop Kubeshark
-Press `Ctrl+C` in the terminal to stop tapping.
+* Routes traffic based on the request path.
+* Useful for **monolithic apps split by endpoints**.
+* Example:
+
+  * `/login` → Login Service
+  * `/dashboard` → Dashboard Service
+
+#### 🃏 **Wildcard Host Routing**
+
+* Matches multiple subdomains using wildcard (`*`).
+* Good for **multi-tenant applications**.
+* Example:
+
+  * `*.myapp.com` → Multi-tenant router service
+  * `client1.myapp.com`, `client2.myapp.com` → All match
+
+### 🔐 TLS Termination in Ingress
+
+TLS/SSL ensures secure traffic. Ingress handles TLS in 3 different ways:
+
+#### 1. **SSL Offloading**
+
+* TLS is **terminated at the Ingress Controller** (decrypted).
+* Traffic from Ingress to backend is plain HTTP.
+* Advantage: Backend doesn’t deal with encryption.
+* Use Case: When internal traffic is trusted or performance matters.
+
+#### 2. **SSL Passthrough**
+
+* Ingress does **not decrypt** TLS.
+* Traffic is forwarded **encrypted** to the backend service.
+* The backend pod must handle TLS termination.
+* Use Case: When you want end-to-end encryption (zero trust networks).
+
+#### 3. **SSL Bridging**
+
+* TLS is **terminated at Ingress**, inspected, and **re-encrypted** before forwarding to backend.
+* Both Ingress and backend use different TLS certificates.
+* Use Case: Needed when you want to inspect traffic **and** enforce encryption end-to-end.
+
+### 🛡️ Ingress Advanced Use Cases
+
+* **Rate Limiting** – Block clients that exceed request limits.
+* **IP Whitelisting** – Allow only certain IPs to access.
+* **Rewrite Paths** – Strip or replace paths before forwarding.
+* **Web Application Firewall (WAF)** – Protect against threats like SQL injection.
+* **Basic Auth** – Protect endpoints with user/pass.
 
 ---
