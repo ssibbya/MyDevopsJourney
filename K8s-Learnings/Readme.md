@@ -306,9 +306,77 @@ When a Deployment creates Pods, each pod is assigned a new IP address. This beco
    - Good for internal microservice communication.
 
 2. **NodePort**
-   - Exposes the service on a **static port** on each worker node's IP.
-   - Accessible **within the organization** (if you have the node IP).
-   - Useful for testing or internal access without a cloud load balancer.
+    
+* **NodePort** is a type of Kubernetes **Service** that exposes your application running inside the cluster **on a port of each worker node**.
+* This makes the app accessible from **outside the cluster**, as long as you know the IP address of **any** worker node and the **NodePort**.
+
+---
+
+### 🧠 How It Works Behind the Scenes
+
+1. **Port Range**
+
+   * NodePort uses ports from the reserved range: **`30000–32767`** (default).
+   * When you create a service of type `NodePort`, Kubernetes assigns a port from this range — or you can specify one manually.
+
+2. **kube-proxy and iptables**
+
+   * `kube-proxy` runs on each worker node and is responsible for networking rules.
+   * It **updates the iptables** rules to route external traffic coming to `<NodeIP>:<NodePort>` to the correct Kubernetes Service, and from there to the backend Pods.
+
+3. **Pre-routing Rule (iptables)**
+
+   * A rule is added in the **PREROUTING** chain.
+   * It tells the system: "If a request comes to `<NodeIP>:<NodePort>`, forward it to the internal ClusterIP Service."
+
+4. **Service to Pod**
+
+   * The Service uses **label selectors** to find the matching Pods.
+   * It then **load balances** traffic across the healthy Pods behind it.
+
+---
+
+### 🔁 Flow of a Request in NodePort
+
+```
+User → http://<NodeIP>:<NodePort> 
+     → kube-proxy intercepts the request
+     → iptables forwards it to the ClusterIP of the Service
+     → Service load balances to one of the backend Pods
+     → Pod sends response back
+```
+
+---
+
+### ✅ Use Case
+
+* **Best for development** or **internal testing**.
+* Not suitable for production-level public exposure (use **LoadBalancer** or **Ingress** instead).
+
+---
+
+### 📌 Example
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  type: NodePort
+  selector:
+    app: my-app
+  ports:
+    - port: 80          # ClusterIP port
+      targetPort: 8080  # Pod port
+      nodePort: 30080   # Node port (within 30000–32767)
+```
+
+* If your node has IP `192.158.1.100`, you can access your app at:
+
+  ```
+  http://192.158.1.100:30080
+  ```
 
 3. **LoadBalancer**
    - Exposes the service to the **external world** using a cloud provider's load balancer (e.g., AWS ELB).
