@@ -384,10 +384,6 @@ spec:
 
 ---
 
-Here’s a **clear and beginner-friendly explanation** of Kubernetes **Ingress**, along with your points refined, structured, and expanded for better flow:
-
----
-
 ## Kubernetes Ingress
 
 ### Why Ingress?
