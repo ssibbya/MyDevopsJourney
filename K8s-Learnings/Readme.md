@@ -434,6 +434,7 @@ For every **`LoadBalancer` service**, the **cloud provider charges** for:
      ↓
 [Pods]
 ```
+<img width="692" alt="Screenshot 2025-05-04 at 5 15 52 PM" src="https://github.com/user-attachments/assets/83df4b21-7bbe-4d6c-bf34-584334e98f99" />
 
 ## Ingress vs Ingress Controller
 
