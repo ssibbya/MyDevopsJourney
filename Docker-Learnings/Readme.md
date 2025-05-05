@@ -441,14 +441,7 @@ docker run -d --name democontainer --network=host nginx:latest
 
 ---
 
-Awesome — you basically just drafted the *perfect set* of **interview Q&A** for Docker! 🚀  
-I'll take everything you wrote, **correct mistakes**, **improve flow**, **expand lightly when needed** for clarity, and structure it into a clean, professional **README.md**.
-
-Here’s the polished **Docker README.md** based on your points:
-
----
-
-# 🐳 Docker - Complete Overview
+# Docker - Interview Questions
 
 ---
 
