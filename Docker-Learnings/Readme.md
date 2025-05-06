@@ -550,7 +550,8 @@ docker run --network=isolated_network mycontainer
 ## 🏗️ What is Multi-Stage Build in Docker?
 
 - Multi-stage builds allow you to **use multiple `FROM` statements** in a `Dockerfile`.
-- You can **build** your application in one stage and **copy only the final output** into a minimal final image.
+- Build your app in a full-featured image (like golang, node, or ubuntu)
+- Copy only the final output (like the binary or compiled app) into a smaller base image (e.g., distroless, alpine, or scratch)
 - Helps **reduce image size** and **improve security**.
 
 **Example:**
