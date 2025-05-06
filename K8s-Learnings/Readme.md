@@ -11,6 +11,7 @@
 - [Deployments & Scaling](#kubernetes-deployment)
 - [Kubernetes Services](#kubernetes-services-svc)
 - [Kubernetes Ingress](#kubernetes-ingress)
+- [Kubernetes RBAC](#kubernetes-rbac)
 
 ---
 
@@ -552,3 +553,273 @@ TLS/SSL ensures secure traffic. Ingress handles TLS in 3 different ways:
 * **Basic Auth** – Protect endpoints with user/pass.
 
 ---
+
+## Kubernetes RBAC
+
+Kubernetes uses RBAC (Role-Based Access Control) to **define who can access what** in your cluster. This is critical for enforcing **least-privileged access**.
+
+---
+
+## 🧠 Key Concepts
+
+### 👤 Users vs 🛠 Service Accounts
+
+| Type             | Description                                      |
+|------------------|--------------------------------------------------|
+| **User**         | A human (e.g., developer, admin). Not managed by Kubernetes. Use external providers (e.g., AWS IAM, Azure AD). |
+| **Service Account** | A Kubernetes-managed identity used by apps running in Pods. |
+
+---
+
+## 📦 RBAC Components
+
+| Component             | Scope       | Purpose                                     |
+|------------------------|-------------|---------------------------------------------|
+| **Role**               | Namespace   | Defines allowed actions on resources **within a namespace** |
+| **ClusterRole**        | Cluster     | Same as Role but applies **across the entire cluster**       |
+| **RoleBinding**        | Namespace   | Grants a Role to a User/Group/Service Account in a namespace |
+| **ClusterRoleBinding** | Cluster     | Grants a ClusterRole to subjects **cluster-wide**             |
+
+---
+
+## 🧾 YAML Examples with Explanation
+
+### 1️⃣ Role (Namespace Scoped)
+
+This YAML defines a **Role** that allows read-only access to Pods in the `dev` namespace.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: read-pods
+  namespace: dev
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+
+
+🔍 **Explanation**:
+
+* `resources`: Targets **pods**
+* `verbs`: Allows `get`, `watch`, and `list` (read-only access)
+* `apiGroups`: Empty string `""` means the core API group (where Pods belong)
+
+---
+
+### 2️⃣ RoleBinding
+
+This binds the above Role to a specific user named `dev-user` within the same namespace.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods-binding
+  namespace: dev
+subjects:
+- kind: User
+  name: dev-user
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: read-pods
+  apiGroup: rbac.authorization.k8s.io
+```
+
+🔍 **Explanation**:
+
+* `subjects`: Who gets access (here, a user named `dev-user`)
+* `roleRef`: The Role being assigned (`read-pods` in `dev`)
+
+---
+
+### 3️⃣ ClusterRole (Cluster Wide)
+
+Allows read-only access to Nodes across the entire cluster.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: view-nodes
+rules:
+- apiGroups: [""]
+  resources: ["nodes"]
+  verbs: ["get", "list"]
+```
+
+---
+
+### 4️⃣ ClusterRoleBinding
+
+Grants the above ClusterRole to a user `ops-user` at the cluster level.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: view-nodes-binding
+subjects:
+- kind: User
+  name: ops-user
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: view-nodes
+  apiGroup: rbac.authorization.k8s.io
+```
+
+---
+
+## 🔐 External Authentication (IAM Integration Example)
+
+Kubernetes does **not manage user accounts** directly. Use cloud identity providers:
+
+* **AWS**: IAM user + OIDC provider
+* **Azure**: Azure AD
+* **Google Cloud**: Google OAuth
+
+✅ Example: Grant AWS IAM user access to EKS using `aws-auth` ConfigMap
+
+```bash
+aws eks update-kubeconfig --name my-cluster
+```
+
+---
+
+## ✅ Summary
+
+* Use **Roles** and **RoleBindings** for namespace-level control.
+* Use **ClusterRoles** and **ClusterRoleBindings** for cluster-wide permissions.
+* Bind roles to **users, groups, or service accounts**.
+* Kubernetes integrates with external identity systems for user authentication.
+
+RBAC ensures secure and fine-grained access to your Kubernetes cluster. 🔐
+
+---
+
+## 🛠️ Custom Resources in Kubernetes
+
+Kubernetes is highly extensible. Instead of only using native features, you can extend its functionality by **creating your own APIs**. This is especially useful for integrating tools like Argo CD, Keycloak, or security policies.
+
+---
+
+### 🚀 Why Use Custom Resources?
+
+* Native Kubernetes objects (like Pods, Services, Deployments) might not cover all use cases.
+* You can define your own resource types and automate their behavior.
+
+---
+
+### 📚 Key Components of a Custom Resource Extension
+
+#### 1. **Custom Resource Definition (CRD)**
+
+* A CRD defines a **new API type** for Kubernetes.
+* It tells Kubernetes: “Here’s a new kind of object you should understand.”
+* Example: `Ingress`, `Certificate`, or a new kind of `App` resource.
+
+#### 2. **Custom Resource (CR)**
+
+* A specific instance of a custom resource type.
+* Just like a Pod is an instance of a Deployment, a CR is an instance of a CRD.
+
+#### 3. **Custom Controller**
+
+* The logic that watches for changes in CRs and acts accordingly.
+* Written in Go using `client-go` library.
+* It listens to API server changes using **informers** and processes events using a **worker queue**.
+
+---
+
+### ⚙️ How It Works — Step-by-Step
+
+```mermaid
+flowchart
+    "Developer" -->
+      A1(Create CRD)
+      A3(Write Custom Controller)
+
+     "User" -->
+      A2(Create CR)
+
+     "Kubernetes" -->
+      B1[API Server]
+      B2[Validate CR against CRD]
+      B3[Store in etcd]
+
+     "Custom Controller" -->
+      C1[Watch CR Events]
+      C2[Work Queue]
+      C3[Business Logic: e.g. Create Resources]
+
+    A1 --> B1
+    A2 --> B1
+    B1 --> B2 --> B3
+    A3 --> C1
+    B3 --> C1 --> C2 --> C3
+```
+
+---
+
+### 🧱 Analogy with Built-In Resources
+
+| Custom Resource Component | Equivalent Built-In Example     |
+| ------------------------- | ------------------------------- |
+| CRD                       | Deployment definition           |
+| Controller                | Deployment controller (builtin) |
+| CR                        | Actual deployment object        |
+
+---
+
+### 📄 YAML Definitions (Simplified)
+
+#### CustomResourceDefinition (CRD) Example
+
+```yaml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: crontabs.stable.example.com
+spec:
+  group: stable.example.com
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+  scope: Namespaced
+  names:
+    plural: crontabs
+    singular: crontab
+    kind: CronTab
+    shortNames:
+    - ct
+```
+
+#### Custom Resource (CR) Example
+
+```yaml
+apiVersion: stable.example.com/v1
+kind: CronTab
+metadata:
+  name: my-cron-job
+spec:
+  schedule: "*/5 * * * *"
+  image: my-cron-image
+```
+
+---
+
+### ✅ Summary
+
+* CRDs define **what your custom API looks like**.
+* CRs are **instances** of those custom APIs, created by developers.
+* Controllers **watch** for CRs and **take action** accordingly, written by DevOps engineers.
+
+This approach powers tools like **ArgoCD, Cert-Manager, Prometheus Operator**, and many more.
+
