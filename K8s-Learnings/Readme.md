@@ -33,10 +33,6 @@ Containers are **ephemeral** by nature — they can be short-lived and prone to 
 
 ---
 
-Absolutely — here's the **updated and accurate comparison** including the **deprecation of `dockershim`**, with correct terminology and architecture for both Docker and Kubernetes. You can directly include this in your `README.md`.
-
----
-
 ## Docker vs Kubernetes Architecture
 
 ### 🚢 Docker Architecture (Single Host)
@@ -269,7 +265,6 @@ kubectl delete pod <pod-name>
 Reference for `kubectl`: [https://kubernetes.io/docs/reference/kubectl/quick-reference/](https://kubernetes.io/docs/reference/kubectl/quick-reference/)
 
 ---
-# Kubernetes Services and Scaling - README
 
 ## Estimating Number of Pods
 
@@ -346,7 +341,7 @@ User → http://<NodeIP>:<NodePort>
 ### ✅ Use Case
 
 * **Best for development** or **internal testing**.
-* Not suitable for production-level public exposure (use **LoadBalancer** or **Ingress** instead).
+* Not suitable for production-level public exposure.
 
 ### 📌 Example
 
