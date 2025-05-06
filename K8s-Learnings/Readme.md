@@ -701,20 +701,20 @@ RBAC ensures secure and fine-grained access to your Kubernetes cluster. 🔐
 
 ---
 
-## 🛠️ Custom Resources
+## Custom Resources
 
 Kubernetes is highly extensible. Instead of only using native features, you can extend its functionality by **creating your own APIs**. This is especially useful for integrating tools like Argo CD, Keycloak, or security policies.
 
 ---
 
-### 🚀 Why Use Custom Resources?
+### Why Use Custom Resources?
 
 * Native Kubernetes objects (like Pods, Services, Deployments) might not cover all use cases.
 * You can define your own resource types and automate their behavior.
 
 ---
 
-### 📚 Key Components of a Custom Resource Extension
+### Key Components of a Custom Resource Extension
 
 #### 1. **Custom Resource Definition (CRD)**
 
@@ -735,7 +735,7 @@ Kubernetes is highly extensible. Instead of only using native features, you can 
 
 ---
 
-### ⚙️ How It Works — Step-by-Step
+### How It Works — Step-by-Step
 
 ```
 flowchart
@@ -765,7 +765,7 @@ flowchart
 
 ---
 
-### 🧱 Analogy with Built-In Resources
+### Analogy with Built-In Resources
 
 | Custom Resource Component | Equivalent Built-In Example     |
 | ------------------------- | ------------------------------- |
