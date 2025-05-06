@@ -12,6 +12,7 @@
 - [Kubernetes Services](#kubernetes-services-svc)
 - [Kubernetes Ingress](#kubernetes-ingress)
 - [Kubernetes RBAC](#kubernetes-rbac)
+- [Custom Resources](#custom-resources)
 
 ---
 
@@ -700,7 +701,7 @@ RBAC ensures secure and fine-grained access to your Kubernetes cluster. 🔐
 
 ---
 
-## 🛠️ Custom Resources in Kubernetes
+## 🛠️ Custom Resources
 
 Kubernetes is highly extensible. Instead of only using native features, you can extend its functionality by **creating your own APIs**. This is especially useful for integrating tools like Argo CD, Keycloak, or security policies.
 
@@ -736,7 +737,7 @@ Kubernetes is highly extensible. Instead of only using native features, you can 
 
 ### ⚙️ How It Works — Step-by-Step
 
-```mermaid
+```
 flowchart
     "Developer" -->
       A1(Create CRD)
