@@ -841,6 +841,8 @@ A **ConfigMap** is used to store **non-sensitive configuration data** in key-val
 * As configuration files mounted inside the container
 * Via Kubernetes API calls
 
+![image](https://github.com/user-attachments/assets/11d77e3a-e2c3-456a-ab60-c9ddf7ef6a75)
+
 ### Common Use Cases
 
 Store data such as:
