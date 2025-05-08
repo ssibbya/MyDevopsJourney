@@ -13,6 +13,7 @@
 - [Kubernetes Ingress](#kubernetes-ingress)
 - [Kubernetes RBAC](#kubernetes-rbac)
 - [Custom Resources](#custom-resources)
+- [Configmaps and Secrets](#configmaps-and-secrets)
 
 ---
 
@@ -823,4 +824,151 @@ spec:
 * Controllers **watch** for CRs and **take action** accordingly, written by DevOps engineers.
 
 This approach powers tools like **ArgoCD, Cert-Manager, Prometheus Operator**, and many more.
+
+---
+
+## ConfigMaps and Secrets
+
+Kubernetes provides ways to manage and inject configuration data into your applications. Two important resources for this are **ConfigMaps** and **Secrets**.
+
+---
+
+## ConfigMap
+
+A **ConfigMap** is used to store **non-sensitive configuration data** in key-value pairs. This data can be consumed by pods in several ways:
+
+* As environment variables
+* As configuration files mounted inside the container
+* Via Kubernetes API calls
+
+### Common Use Cases
+
+Store data such as:
+
+* Database host
+* Port numbers
+* Log levels
+* Feature flags
+
+### Why not store passwords here?
+
+ConfigMaps are stored as plain text in **etcd**, the underlying Kubernetes key-value store. Anyone with access to the cluster (or etcd) can read them. For **sensitive data**, use **Secrets** instead.
+
+### Example: Create a ConfigMap
+
+```bash
+kubectl create configmap my-config \
+  --from-literal=db_host=localhost \
+  --from-literal=db_port=3306
+
+  Or
+
+kubectl apply -f my-config.yaml
+```
+
+Or using a YAML:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-config
+data:
+  db_host: localhost
+  db_port: "3306"
+```
+
+---
+
+## Secret
+
+A **Secret** is similar to a ConfigMap, but intended to hold **sensitive information** such as:
+
+* Database usernames
+* Passwords
+* API keys
+* TLS certificates
+
+Secrets are **base64-encoded** by default and can be **encrypted at rest** using Kubernetes encryption providers.
+
+### Key Benefits
+
+* Stores sensitive data securely
+* Can be encrypted at rest in etcd
+* Access can be controlled via **RBAC**
+
+### Best Practices
+
+* Enforce strict RBAC policies to limit who can read Secrets.
+* Use encryption providers for extra security (e.g., KMS, HashiCorp Vault).
+* Avoid hardcoding secrets into container images or code.
+
+### Example: Create a Secret
+
+```bash
+kubectl create secret generic db-secret \
+  --from-literal=username=admin \
+  --from-literal=password=secret123
+```
+
+Or using a YAML:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: db-secret
+type: Opaque
+data:
+  username: YWRtaW4=       # base64 for "admin"
+  password: c2VjcmV0MTIz   # base64 for "secret123"
+```
+
+> ⚠️ **Note**: You can decode base64 with `echo YWRtaW4= | base64 --decode`.
+
+---
+
+## How ConfigMaps and Secrets Are Used in Pods
+
+### As Environment Variables
+
+```yaml
+env:
+  - name: DB_HOST
+    valueFrom:
+      configMapKeyRef:
+        name: my-config
+        key: db_host
+  - name: DB_USER
+    valueFrom:
+      secretKeyRef:
+        name: db-secret
+        key: username
+```
+
+### As Mounted Files
+
+```yaml
+volumeMounts:
+  - name: config-volume
+    mountPath: /etc/config
+volumes:
+  - name: config-volume
+    configMap:
+      name: my-config
+```
+
+---
+
+## Summary
+
+| Feature        | ConfigMap                | Secret                      |
+| -------------- | ------------------------ | --------------------------- |
+| Purpose        | Store non-sensitive data | Store sensitive data        |
+| Security       | Plaintext in etcd        | Encrypted (base64, at rest) |
+| Usage in Pod   | Env vars, volumes        | Env vars, volumes           |
+| Access Control | RBAC                     | Strict RBAC recommended     |
+
+---
+
 
